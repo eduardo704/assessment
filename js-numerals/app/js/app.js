@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 
-
+//**
+/*
+ * This functions is used to convert decimals under 20 to English
+ */
 function stringifyDecimal(dec) {
 
     if (dec === 1) {
@@ -43,31 +46,34 @@ function stringifyDecimal(dec) {
     if (dec === 12) {
         return "twelve";
     }
-    if (dec === 3) {
+    if (dec === 13) {
         return "thirteen";
     }
-    if (dec === 4) {
+    if (dec === 14) {
         return "fourteen";
     }
-    if (dec === 5) {
+    if (dec === 15) {
         return "fiveteen";
     }
-    if (dec === 6) {
+    if (dec === 16) {
         return "sixteen";
     }
-    if (dec === 7) {
+    if (dec === 17) {
         return "seventeen";
     }
-    if (dec === 8) {
+    if (dec === 18) {
         return "eightenn";
     }
-    if (dec === 9) {
+    if (dec === 19) {
         return "nineteen";
     }
 
     return "";
 }
 
+/*
+ * This functions is used to convert decimals over 20 to English
+ */
 function stringfyTens(ten) {
     if (ten === 2) {
         return "twenty";
@@ -94,12 +100,16 @@ function stringfyTens(ten) {
         return "ninety";
     }
 }
-
+/*
+ * this one uses the two methods above to convert numbers bellow one hundred and over twenty like 21 to twenty one
+ */
 function stringfyTensOverTwenty(input) {
     return stringfyTens(parseInt(input.charAt(0))) + " " + stringifyDecimal(parseInt(input.charAt(1)));
 }
-
-function mainConverterForTreeNumbers(numberString) {
+/*
+ * Main converter function used to convert blocks of three numbers into English used to all convertions
+ */
+function mainConverterForThreeNumbers(numberString) {
     var output = "";
     var lastTwoNumbers = parseInt(numberString.substring(numberString.length - 2, numberString.length));
     if (lastTwoNumbers < 20) {
@@ -115,19 +125,12 @@ function mainConverterForTreeNumbers(numberString) {
             output = stringifyDecimal(parseInt(numberString.charAt(0))) + " hundred and " + output;
         }
     }
-
     return output;
-
-
 }
 
-function controller() {
-    var number = parseInt($("#numInputed").val());
-    var response = mainConverter(number);
-    $("#resultado").html(response);
-
-}
-
+/*
+ * Main converter here we define from which range we want to convert from (now is in trillions) 
+ */
 function mainConverter(number) {
     var output = '';
     var numberString = number.toString();
@@ -140,32 +143,32 @@ function mainConverter(number) {
         output = stringifyDecimal(number);
     }
 
-    if (numberString.length >= 2) {
-        //output = mainConverterForTwenty(numberString.substring(numberString.length - 2, numberString.length));        
-    }
-
-    if (numberString.length <= 3) {
-        //  output = mainConverterForTreeNumbers(numberString);
-    }
-    output = mainConverterForTreeNumbers(numberString.substring(numberString.length, numberString.length - 3));
+    output = mainConverterForThreeNumbers(numberString.substring(numberString.length, numberString.length - 3));
 
     if (numberString.length >= 4) {
-        output = mainConverterForTreeNumbers(numberString.substring(numberString.length - 6, numberString.length - 3)) + " thousand " + output;
+        output = mainConverterForThreeNumbers(numberString.substring(numberString.length - 6, numberString.length - 3)) + " thousand " + output;
     }
 
     if (numberString.length >= 7) {
-        output = mainConverterForTreeNumbers(numberString.substring(numberString.length - 9, numberString.length - 6)) + " million " + output;
+        output = mainConverterForThreeNumbers(numberString.substring(numberString.length - 9, numberString.length - 6)) + " million " + output;
     }
 
     if (numberString.length >= 10) {
-        output = mainConverterForTreeNumbers(numberString.substring(numberString.length - 12, numberString.length - 9)) + " billion " + output;
+        output = mainConverterForThreeNumbers(numberString.substring(numberString.length - 12, numberString.length - 9)) + " billion " + output;
     }
     
      if (numberString.length >= 13) {
-        output = mainConverterForTreeNumbers(numberString.substring(numberString.length - 15, numberString.length - 12)) + " trillion " + output;
+        output = mainConverterForThreeNumbers(numberString.substring(numberString.length - 15, numberString.length - 12)) + " trillion " + output;
     }
-
-
     return output;
+}
+
+/*
+ * Main controller functions that get the inserted number and return the conver string by the main converter
+ */
+function controller() {
+    var number = parseInt($("#numInputed").val());
+    var response = mainConverter(number);
+    $("#resultado").html(response);
 
 }
